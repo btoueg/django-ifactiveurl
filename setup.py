@@ -9,7 +9,7 @@ setup(
     description = 'Simple Django template tag for evaluating current url name',
     long_description = ('A simple if/else template tag evaluating whether the '
                         'current url name matches one of a list of url names'),
-    packages = ['contact'],
+    packages = ['ifactiveurl'],
     classifiers = ['Development Status :: 3 - Alpha',
                    'Environment :: Web Environment',
                    'Intended Audience :: Developers',
