@@ -1,0 +1,5 @@
+# python temp files
+*.pyc
+
+# aptana garbage tmp files
+*.tmp*~

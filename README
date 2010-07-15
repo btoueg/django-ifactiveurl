@@ -1,0 +1,24 @@
+This is just a simple template tag for my use, put here so I can 'pip install' it.
+
+'{% load ifactiveurl_tags %}' will get you:
+
+{% if_active_url request '<url_name> <url_name2>' %}
+{% else %}
+{% endif_active_url %}
+
+If 'request.path' matches 'reverse(<url_name>)' for any of the provided names, the tag will evalute to true.
+
+! Currently does not catch a NoReverseMatch exception raised when a provided name does not reverse. Be careful.
+
+Example:
+
+{% load ifactiveurl_tags %}
+...
+	<div id="topbar">
+		<p class="{% if_active_url request 'home' %}active
+				  {% else %}notactive
+				  {% endif_active_url %}">
+					<a href="{% url home_about %}">Home</a>
+		</p>
+		
+Partly based on the idea at http://www.turnkeylinux.org/blog/django-navbar
