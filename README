@@ -18,7 +18,8 @@ Example:
 		<p class="{% if_active_url request 'home' %}active
 				  {% else %}notactive
 				  {% endif_active_url %}">
-					<a href="{% url home_about %}">Home</a>
+					<a href="{% url home %}">Home</a>
 		</p>
+	</div>
 		
 Partly based on the idea at http://www.turnkeylinux.org/blog/django-navbar
