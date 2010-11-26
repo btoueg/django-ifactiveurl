@@ -3,7 +3,9 @@ from django.core.urlresolvers import reverse
 
 def do_if_active_url(parser, token):
     try:
-        tag_name, request, urls = token.split_contents()
+        tag_name, request = token.split_contents()[:2]
+        urls = token.split_contents()[2]
+        keywords = token.split_contents()[3:]
     except ValueError:
         raise template.TemplateSyntaxError, ("%r tag requires exactly two arguments, received" % 
                                              token.contents.split()[0], len(token.contents.split()[0]))
@@ -18,19 +20,21 @@ def do_if_active_url(parser, token):
     else:
         nodelist_false = template.NodeList()
         
-    return IfActiveUrlNode(request, urls, nodelist_true, nodelist_false)
+    return IfActiveUrlNode(request, urls, keywords, nodelist_true, nodelist_false)
 
 class IfActiveUrlNode(template.Node):
-    def __init__(self, request, urls, nodelist_true, nodelist_false):
+    def __init__(self, request, urls, keywords, nodelist_true, nodelist_false):
         self.nodelist_true = nodelist_true
         self.nodelist_false = nodelist_false
         self.request = template.Variable(request)
         self.urls = template.Variable(urls)
+        self.keywords = [ template.Variable(k) for k in keywords]
 
     def render(self, context):
         request = self.request.resolve(context)
         urls = self.urls.resolve(context)
-        if request.path in (reverse(url) for url in urls.split()):
+        keywords = [ k.resolve(context) for k in self.keywords]
+        if request.path in (reverse(url,args=tuple(keywords)) for url in urls.split()):
             return self.nodelist_true.render(context)
         else:
             return self.nodelist_false.render(context)
